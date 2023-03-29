@@ -1,4 +1,6 @@
-import Bot
+from Bot import dp
+from aiogram import executor
+
 
 if __name__ == '__main__':
-    Bot.start()
+    executor.start_polling(dp, skip_updates=True)

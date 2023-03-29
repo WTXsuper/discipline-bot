@@ -1,6 +1,5 @@
 import logging
-
-from aiogram import Bot, Dispatcher, executor, types
+from aiogram import Bot, Dispatcher, types
 
 
 def getToken() -> str:
@@ -8,30 +7,26 @@ def getToken() -> str:
         return F.read()
 
 
-def start():
-    # Configure logging (из Quick Start Aiogram Docs)
-    logging.basicConfig(level=logging.INFO)
+# Настраиваем уровень логгирования (из Quick Start Aiogram Docs)
+logging.basicConfig(level=logging.INFO)
 
-    # устаналиваем API_TOKEN
-    api_token = getToken()
+# устанавливаем API_TOKEN
+API_TOKEN = getToken()
 
-    # инициализируем бота
-    try:
-        bot = Bot(token=api_token)
-        dp = Dispatcher(bot)
-        logging.info("Успешная инициализация бота с API: " + api_token)
-    except:
-        print("ОШИБКА! Не удалось инициализировать бота!")
-        exit(1)
+# инициализируем бота
+try:
+    bot = Bot(token=API_TOKEN)
+    dp = Dispatcher(bot)
+    logging.info("Успешная инициализация бота с API: " + API_TOKEN)
+except:
+    print("ОШИБКА! Не удалось инициализировать бота!")
+    exit(1)
 
-    # Перехватываем команды /start и /help
-    @dp.message_handler(commands=['start', 'help'])
-    async def send_welcome(message: types.Message):
-        await message.answer('Привет! Я бот-помощник по дисциплине "Основы профессиональной деятельности".\n' \
-                             + 'Моя задача - помочь студенту с поиском информации о текущей успеваемости и рейтинге.')
-        logging.info("Сработал ответ на /start и /help")
 
-    # TO-DO
+# перехватываем команды /start и /help
+@dp.message_handler(commands=['start', 'help'])
+async def send_welcome(message: types.Message):
+    await message.answer('Привет! Я бот-помощник по дисциплине «Основы профессиональной деятельности"\n')
+    logging.info("Ответ на /start или /help")
 
-    # запуск long pulling
-    executor.start_polling(dp, skip_updates=True)
+# TO-DO
