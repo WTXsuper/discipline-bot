@@ -3,7 +3,7 @@ import Database as DB
 from aiogram import Bot, Dispatcher, types
 
 
-def getToken() -> str:
+def readToken() -> str:
     with open("API_TOKEN.txt", "r") as F:
         return F.read()
 
@@ -15,7 +15,7 @@ logging.basicConfig(level=logging.INFO)
 Groups = DB.getGroups()
 
 # устанавливаем API_TOKEN
-API_TOKEN = getToken()
+API_TOKEN = readToken()
 
 # инициализируем бота
 try:
