@@ -1,7 +1,6 @@
 import logging
 import sqlite3
 
-
 db_logger = logging.getLogger("database")  # логгер для БД
 
 
@@ -11,6 +10,7 @@ def getGroups() -> list:
         cur = sqlite_connection.cursor()  # задаём указатель БД
         cur.execute("SELECT DISTINCT groupname FROM students")
         Groups = [i[0] for i in cur.fetchall()]  # cur.fetchall() возвращает кортеж, оттуда нужны только чистые строки
+        sqlite_connection.close()
         db_logger.info("Список групп успешно получен из БД:" + ",".join(Groups))
         return Groups
     except:
@@ -24,6 +24,7 @@ def getStudents(group: str) -> list:
         cur = sqlite_connection.cursor()  # задаём указатель БД
         cur = cur.execute("SELECT fullname FROM students WHERE groupname = '{}';".format(group))
         Students = [i[0] for i in cur.fetchall()]  # cur.fetchall() возвращает кортеж, оттуда нужны только чистые строки
+        sqlite_connection.close()
         db_logger.info("Список студентов группы '{}' успешно получен из БД".format(group))
         return Students
     except:
@@ -56,7 +57,8 @@ def getRating(student: str) -> dict:
         attendance = (lesson_count - skipped) / lesson_count  # посещаемость (дробью)
         study_info = {'rating': rating, 'attendance': attendance, 'lesson_count': lesson_count,
                       'attended': (lesson_count - skipped)}
-        db_logger.info("Список студентов группы '{}' успешно получен из БД".format(student))
+        sqlite_connection.close()
+        db_logger.info("Информация о студенте '{}' успешна получена из БД".format(student))
         return study_info
     except:
         print("ОШИБКА! Не удалось получить информацию о студенте '{}'!".format(student))
